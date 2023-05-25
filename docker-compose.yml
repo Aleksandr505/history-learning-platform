@@ -1,0 +1,68 @@
+version: '3'
+
+services:
+
+  app:
+    container_name: app
+    image: history-learning-platform-app
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+      - "5005:5005"
+    links:
+      - demo
+    depends_on:
+      - db
+      - es
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/platformdb
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - ELASTICSEARCH_URL=es:9200
+    networks:
+      - platform-network
+
+  demo:
+    container_name: demo
+    image: demo
+    build:
+      context: ./demo
+      dockerfile: Dockerfile
+    ports:
+      - "8888:8888"
+    networks:
+      - platform-network
+
+  db:
+    image: 'postgres:13.1-alpine'
+    volumes:
+      - postgres_data:/var/lib/postgresl/data/
+      - ./api/src/main/resources/sql/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=platformdb
+    networks:
+      - platform-network
+
+  es:
+    image: elasticsearch:7.6.2
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+    ports:
+      - "9200:9200"
+    networks:
+      - platform-network
+
+volumes:
+  postgres_data:
+
+networks:
+  platform-network:
+    driver: bridge

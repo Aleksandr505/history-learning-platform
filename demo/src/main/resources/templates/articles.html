@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Articles</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<div class="search-container">
+    <input type="text" id="search-input" placeholder="Search article by title...">
+    <button type="button" id="search-button">Search</button>
+</div>
+
+<div>
+    <button class="btn btn-primary" id="new-article-btn">Create new article</button>
+</div>
+
+<h1>All Articles</h1>
+<table id="article-table">
+    <thead>
+    <tr>
+        <th>Title</th>
+        <th>Date</th>
+    </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+<script th:src="@{/js/article.js}"></script>
+</body>
+</html>

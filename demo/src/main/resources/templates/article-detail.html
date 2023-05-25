@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Article Detail</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<h1>Article Detail</h1>
+<div>
+    <h2 id="article-title"></h2>
+    <p><span id="article-author"></span> | <span id="article-date"></span></p>
+    <p id="article-content"></p>
+</div>
+
+<!-- Форма добавления комментария -->
+<br/>
+<h3>Добавить новый комментарий:</h3>
+<form id="comment-form">
+    <div class="form-group">
+        <label for="userId">Идентификатор автора</label>
+        <input type="text" class="form-control" id="userId" name="userId">
+    </div>
+    <div class="form-group">
+        <label for="content">Текст комментария</label>
+        <textarea class="form-control" id="content" rows="3" name="content"></textarea>
+    </div>
+    <button type="submit" id="createCommentButton">Добавить комментарий</button>
+</form>
+
+<!-- Блок для отображения списка комментариев -->
+<h3>Комментарии:</h3>
+<div id="comments-container"></div>
+
+<script th:src="@{/js/article-detail.js}"></script>
+
+</body>
+</html>

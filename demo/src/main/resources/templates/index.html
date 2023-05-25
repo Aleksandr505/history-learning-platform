@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User Registration</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<div>
+
+    <h1>User Registration Form</h1>
+    <form id="registration-form">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required />
+        <br />
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required />
+        <br />
+        <label for="passwordConfirm">PasswordConfirm:</label>
+        <input type="password" id="passwordConfirm" name="passwordConfirm" required />
+        <br />
+        <label for="lastName">lastName:</label>
+        <input type="text" id="lastName" name="lastName" required />
+        <br />
+        <label for="firstName">firstName:</label>
+        <input type="text" id="firstName" name="firstName" required />
+        <br />
+        <label for="patronymic">patronymic:</label>
+        <input type="text" id="patronymic" name="patronymic" />
+        <br />
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required />
+        <br />
+        <button type="submit" id="registerButton">Register</button>
+    </form>
+
+    <a href="/articles">View Articles</a>
+
+    <h2>List of Users:</h2>
+    <table id="user-table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Username</th>
+            <th>Email</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- User rows will be added here -->
+        </tbody>
+    </table>
+
+
+    <script th:src="@{/js/main.js}"></script>
+</div>
+</body>
+</html>
