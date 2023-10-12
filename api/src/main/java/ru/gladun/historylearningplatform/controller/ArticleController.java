@@ -1,15 +1,20 @@
 package ru.gladun.historylearningplatform.controller;
 
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 import ru.gladun.historylearningplatform.dto.request.ArticleDtoRequest;
 import ru.gladun.historylearningplatform.dto.response.ArticleDtoResponse;
+import ru.gladun.historylearningplatform.entity.MessageAI;
 import ru.gladun.historylearningplatform.exception.ServerException;
 import ru.gladun.historylearningplatform.service.ArticleService;
 import ru.gladun.historylearningplatform.service.EsArticleService;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,9 +27,12 @@ public class ArticleController {
 
     private final EsArticleService esArticleService;
 
-    public ArticleController(ArticleService articleService, EsArticleService esArticleService) {
+    private final WebClient.Builder webClientBuilder;
+
+    public ArticleController(ArticleService articleService, EsArticleService esArticleService, WebClient.Builder webClientBuilder) {
         this.articleService = articleService;
         this.esArticleService = esArticleService;
+        this.webClientBuilder = webClientBuilder;
     }
 
     @PostMapping(value = "/articles", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -66,6 +74,20 @@ public class ArticleController {
             response.add(article);
         }
         return response;
+    }
+
+    @PostMapping(value = "/articles/ai", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public MessageAI generateArticleUsingAI(@RequestBody MessageAI messageAI) throws Exception {
+
+        return webClientBuilder.build()
+                .post()
+                .uri("http://127.0.0.1:8090")
+                .body(Mono.just(messageAI), MessageAI.class)
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToMono(MessageAI.class)
+                .timeout(Duration.ofMillis(30000))
+                .block();
     }
 
 }
