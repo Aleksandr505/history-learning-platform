@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 import ru.gladun.historylearningplatform.dto.request.ArticleDtoRequest;
+import ru.gladun.historylearningplatform.dto.response.AIMessageDtoResponse;
 import ru.gladun.historylearningplatform.dto.response.ArticleDtoResponse;
 import ru.gladun.historylearningplatform.entity.MessageAI;
 import ru.gladun.historylearningplatform.exception.ServerException;
@@ -77,16 +78,16 @@ public class ArticleController {
     }
 
     @PostMapping(value = "/articles/ai", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public MessageAI generateArticleUsingAI(@RequestBody MessageAI messageAI) throws Exception {
+    public AIMessageDtoResponse generateArticleUsingAI(@Valid @RequestBody ArticleDtoRequest articleDtoRequest) throws Exception {
 
         return webClientBuilder.build()
                 .post()
                 .uri("http://127.0.0.1:8090")
-                .body(Mono.just(messageAI), MessageAI.class)
+                .body(Mono.just(articleDtoRequest), ArticleDtoRequest.class)
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
-                .bodyToMono(MessageAI.class)
-                .timeout(Duration.ofMillis(30000))
+                .bodyToMono(AIMessageDtoResponse.class)
+                .timeout(Duration.ofMillis(240000))
                 .block();
     }
 

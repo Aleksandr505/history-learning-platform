@@ -51,10 +51,11 @@ services:
       - platform-network
 
   es:
-    image: elasticsearch:7.6.2
+    image: elasticsearch:7.17.6
     container_name: elasticsearch
     environment:
       - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     ports:
       - "9200:9200"
     networks:

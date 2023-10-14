@@ -4,18 +4,12 @@
     <meta charset="UTF-8">
     <title>User Registration</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-    <!-- CSRF-токен -->
-    <meta name="_csrf" th:content="${_csrf.token}"/>
-    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 </head>
 <body>
 <div>
 
     <h1>User Registration Form</h1>
     <form id="registration-form">
-        <!-- Вставка CSRF-токена в скрытое поле -->
-        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
         <label for="username">Username:</label>
         <input type="text" id="username" name="username" required />
