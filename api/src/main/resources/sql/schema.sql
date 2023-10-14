@@ -36,7 +36,7 @@ CREATE TABLE article
 (
     id SERIAL NOT NULL,
     title VARCHAR(255) NOT NULL,
-    content VARCHAR(255) NOT NULL,
+    content TEXT NOT NULL,
     date DATE NOT NULL,
     user_id INTEGER NOT NULL REFERENCES "user"(id),
     PRIMARY KEY (id)

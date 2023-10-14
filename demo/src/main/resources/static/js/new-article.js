@@ -36,6 +36,38 @@ $(document).delegate('#save-btn','click', function(event){
     }
 });
 
+$(document).delegate('#generate-ai','click', function(event){
+    event.preventDefault();
+
+    var formData = new FormData(document.getElementById("new-article-form"));
+
+        var json = {};
+        formData.forEach(function(value, key) {
+            json[key] = value;
+        });
+        json['date'] = new Date().toISOString().slice(0, 10);
+
+        $.ajax({
+            type: "POST",
+            contentType: "application/json",
+            url: "http://localhost:8080/api/articles/ai",
+            data: JSON.stringify(json),
+            dataType: 'json',
+            success: function(response) {
+                var textarea = document.getElementById("content");
+                textarea.value = response.message;
+                alert('Article generated using AI!')
+            },
+            error: function(xhr, status, errorThrown) {
+                console.log(xhr.responseText);
+                console.log(status, errorThrown);
+
+                alert('Article generating using AI failed: ' + status + ". "
+                    + errorThrown);
+            }
+        });
+});
+
 function updateArticle() {
     var formData = new FormData(document.getElementById("new-article-form"));
 
