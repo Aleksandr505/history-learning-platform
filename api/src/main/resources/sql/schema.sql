@@ -9,10 +9,10 @@ CREATE TABLE "user"
     id SERIAL NOT NULL,
     username VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
-    last_name VARCHAR(255) NOT NULL,
-    first_name VARCHAR(255) NOT NULL,
+    last_name VARCHAR(255),
+    first_name VARCHAR(255),
     patronymic VARCHAR(255),
-    email VARCHAR(255) NOT NULL,
+    email VARCHAR(255),
     PRIMARY KEY (id),
     CONSTRAINT username_unique UNIQUE (username)
 );
@@ -23,13 +23,6 @@ CREATE TABLE role
     name VARCHAR(255) NOT NULL,
     PRIMARY KEY (id),
     CONSTRAINT name_unique UNIQUE (name)
-);
-
-CREATE TABLE user_role
-(
-    user_id integer NOT NULL REFERENCES "user"(id),
-    role_id integer NOT NULL REFERENCES role(id),
-    PRIMARY KEY (user_id, role_id)
 );
 
 CREATE TABLE article

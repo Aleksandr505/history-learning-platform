@@ -26,6 +26,6 @@ public class UserDtoResponse {
 
     private String email;
 
-    private Set<RoleDtoResponse> roles;
+    private Set<String> roles;
 
 }

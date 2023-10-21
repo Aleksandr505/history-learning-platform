@@ -15,6 +15,7 @@ import ru.gladun.historylearningplatform.repository.UserRepository;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -37,12 +38,11 @@ public class UserService {
         if (!userDtoRequest.getPassword().equals(userDtoRequest.getPasswordConfirm()))
             throw new ServerException(ServerErrorCode.WRONG_PASSWORD_CONFIRM);
 
-        User userDb = userRepository.findByUsername(userDtoRequest.getUsername());
-        if (userDb != null)
+        Optional<User> userDb = userRepository.findByUsername(userDtoRequest.getUsername());
+        if (userDb.isPresent())
             throw new ServerException(ServerErrorCode.LOGIN_BUSY);
 
         User user = userMapStruct.toUser(userDtoRequest);
-        user.setRoles(Collections.singleton(new Role(1L, "ROLE_USER")));
 
         userRepository.save(user);
 
