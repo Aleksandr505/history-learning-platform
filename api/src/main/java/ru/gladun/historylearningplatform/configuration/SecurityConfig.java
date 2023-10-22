@@ -35,9 +35,10 @@ public class SecurityConfig {
                 .exceptionHandling(c -> c.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
                 .authorizeHttpRequests(authorize -> authorize
                         .antMatchers("/auth/signin").permitAll()
-                        .antMatchers(HttpMethod.GET, "/vehicles/**").permitAll()
-                        .antMatchers(HttpMethod.DELETE, "/vehicles/**").hasRole("ADMIN")
-                        .antMatchers(HttpMethod.GET, "/v1/vehicles/**").permitAll()
+                        .antMatchers(HttpMethod.GET, "/api/**").permitAll()
+                        .antMatchers(HttpMethod.POST, "/api/**").permitAll()
+                        .antMatchers(HttpMethod.PUT, "/api/**").permitAll()
+                        .antMatchers(HttpMethod.DELETE, "/api/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(new JwtTokenAuthenticationFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class)

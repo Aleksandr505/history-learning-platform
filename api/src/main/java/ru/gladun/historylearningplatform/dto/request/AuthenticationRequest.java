@@ -1,4 +1,4 @@
-package ru.gladun.historylearningplatform.controller;
+package ru.gladun.historylearningplatform.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

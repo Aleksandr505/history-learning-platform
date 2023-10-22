@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ru.gladun.historylearningplatform.dto.request.AuthenticationRequest;
 import ru.gladun.historylearningplatform.repository.UserRepository;
 import ru.gladun.historylearningplatform.security.JwtTokenProvider;
 

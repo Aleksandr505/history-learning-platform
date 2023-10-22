@@ -35,7 +35,6 @@ public class TestBase {
                         .content(objectMapper.writeValueAsString(user)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.username").value(user.getUsername()))
-                .andExpect(jsonPath("$.password").value(user.getPassword()))
                 .andExpect(jsonPath("$.lastName").value(user.getLastName()))
                 .andExpect(jsonPath("$.firstName").value(user.getFirstName()))
                 .andExpect(jsonPath("$.patronymic").value(user.getPatronymic()))

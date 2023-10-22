@@ -1,7 +1,6 @@
 DROP TABLE IF EXISTS comment CASCADE;
 DROP TABLE IF EXISTS article CASCADE;
-DROP TABLE IF EXISTS user_role CASCADE;
-DROP TABLE IF EXISTS role CASCADE;
+DROP TABLE IF EXISTS user_roles CASCADE;
 DROP TABLE IF EXISTS "user" CASCADE;
 
 CREATE TABLE "user"
@@ -17,12 +16,10 @@ CREATE TABLE "user"
     CONSTRAINT username_unique UNIQUE (username)
 );
 
-CREATE TABLE role
+CREATE TABLE user_roles
 (
-    id SERIAL NOT NULL,
-    name VARCHAR(255) NOT NULL,
-    PRIMARY KEY (id),
-    CONSTRAINT name_unique UNIQUE (name)
+    user_id SERIAL NOT NULL REFERENCES "user"(id),
+    roles VARCHAR(255)
 );
 
 CREATE TABLE article
@@ -44,6 +41,3 @@ CREATE TABLE comment
     article_id INTEGER NOT NULL REFERENCES article(id),
     PRIMARY KEY (id)
 );
-
-INSERT INTO role (id, name) VALUES (1, 'ROLE_USER');
-INSERT INTO role (id, name) VALUES (2, 'ROLE_ADMIN');

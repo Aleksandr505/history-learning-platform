@@ -1,36 +1,28 @@
 package ru.gladun.historylearningplatform.service;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.gladun.historylearningplatform.dto.request.UserDtoRequest;
-import ru.gladun.historylearningplatform.dto.response.RoleDtoResponse;
 import ru.gladun.historylearningplatform.dto.response.UserDtoResponse;
-import ru.gladun.historylearningplatform.entity.Role;
 import ru.gladun.historylearningplatform.entity.User;
 import ru.gladun.historylearningplatform.exception.ServerErrorCode;
 import ru.gladun.historylearningplatform.exception.ServerException;
-import ru.gladun.historylearningplatform.mapstruct.RoleMapStruct;
 import ru.gladun.historylearningplatform.mapstruct.UserMapStruct;
-import ru.gladun.historylearningplatform.repository.RoleRepository;
 import ru.gladun.historylearningplatform.repository.UserRepository;
 
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
     private final UserMapStruct userMapStruct;
-    private final RoleMapStruct roleMapStruct;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, RoleRepository roleRepository, UserMapStruct userMapStruct, RoleMapStruct roleMapStruct) {
+    public UserService(UserRepository userRepository, UserMapStruct userMapStruct, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
         this.userMapStruct = userMapStruct;
-        this.roleMapStruct = roleMapStruct;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public UserDtoResponse register(UserDtoRequest userDtoRequest) throws ServerException {
@@ -42,6 +34,7 @@ public class UserService {
         if (userDb.isPresent())
             throw new ServerException(ServerErrorCode.LOGIN_BUSY);
 
+        userDtoRequest.setPassword(passwordEncoder.encode(userDtoRequest.getPassword()));
         User user = userMapStruct.toUser(userDtoRequest);
 
         userRepository.save(user);
