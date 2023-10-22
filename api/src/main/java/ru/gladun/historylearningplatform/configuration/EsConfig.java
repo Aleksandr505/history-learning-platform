@@ -16,12 +16,18 @@ public class EsConfig extends AbstractElasticsearchConfiguration {
 
     @Value("${elasticsearch.url}")
     public String elasticsearchUrl;
+    @Value("${elasticsearch.username}")
+    private String username;
+    @Value("${elasticsearch.password}")
+    private String password;
 
     @Bean
     @Override
     public RestHighLevelClient elasticsearchClient() {
-        final ClientConfiguration config = ClientConfiguration.builder()
+        final ClientConfiguration config
+                = ClientConfiguration.builder()
                 .connectedTo(elasticsearchUrl)
+                .withBasicAuth(username, password)
                 .build();
 
         return RestClients.create(config).rest();

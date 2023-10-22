@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Set;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -25,6 +25,6 @@ public class UserDtoResponse {
 
     private String email;
 
-    private Set<String> roles;
+    private List<String> roles;
 
 }

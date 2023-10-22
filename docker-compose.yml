@@ -55,6 +55,9 @@ services:
     container_name: elasticsearch
     environment:
       - discovery.type=single-node
+      - ELASTIC_USERNAME=elastic
+      - ELASTIC_PASSWORD=password
+      - xpack.security.enabled=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     ports:
       - "9200:9200"
