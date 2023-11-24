@@ -1,5 +1,6 @@
 package ru.gladun.historylearningplatform.controller;
 
+import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import ru.gladun.historylearningplatform.dto.response.ArticleDtoResponse;
@@ -11,14 +12,11 @@ import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:8888")
+@AllArgsConstructor
 @RequestMapping("/api")
 public class AdminController {
 
     private final AdminService adminService;
-
-    public AdminController(AdminService adminService) {
-        this.adminService = adminService;
-    }
 
     @GetMapping(value = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<UserDtoResponse> getUsers() {

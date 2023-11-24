@@ -1,5 +1,6 @@
 package ru.gladun.historylearningplatform.controller;
 
+import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import ru.gladun.historylearningplatform.dto.request.ArticleDtoRequest;
@@ -13,14 +14,11 @@ import javax.validation.Valid;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:8888")
+@AllArgsConstructor
 @RequestMapping("/api")
 public class CommentController {
 
     private final CommentService commentService;
-
-    public CommentController(CommentService commentService) {
-        this.commentService = commentService;
-    }
 
     @PostMapping(value = "/comments", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public CommentDtoResponse postComment(@Valid @RequestBody CommentDtoRequest commentDtoRequest) throws ServerException {

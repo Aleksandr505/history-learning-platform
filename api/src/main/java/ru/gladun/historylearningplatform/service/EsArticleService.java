@@ -1,6 +1,8 @@
 package ru.gladun.historylearningplatform.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.stereotype.Service;
 import ru.gladun.historylearningplatform.document.Article;
@@ -14,20 +16,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
+@Slf4j
 public class EsArticleService {
 
     private final RestHighLevelClient esClient;
 
     private final EsArticleRepository esArticleRepository;
 
-    public EsArticleService(RestHighLevelClient esClient, EsArticleRepository esArticleRepository) {
-        this.esClient = esClient;
-        this.esArticleRepository = esArticleRepository;
-    }
-
     public void indexArticle(Long id, String title, String date) throws Exception {
         Article document = new Article(id, title, date);
         esArticleRepository.save(document);
+
+        log.info("indexArticle: " + document);
     }
 
     public List<Long> searchArticles(String searchString) throws Exception {
@@ -38,6 +39,7 @@ public class EsArticleService {
             idList.add(document.getId());
         }
 
+        log.info("searchArticles: " + idList);
         return idList;
     }
 

@@ -1,5 +1,7 @@
 package ru.gladun.historylearningplatform.service;
 
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.gladun.historylearningplatform.dto.request.UserDtoRequest;
@@ -13,17 +15,13 @@ import ru.gladun.historylearningplatform.repository.UserRepository;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
+@Slf4j
 public class UserService {
 
     private final UserRepository userRepository;
     private final UserMapStruct userMapStruct;
     private final PasswordEncoder passwordEncoder;
-
-    public UserService(UserRepository userRepository, UserMapStruct userMapStruct, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.userMapStruct = userMapStruct;
-        this.passwordEncoder = passwordEncoder;
-    }
 
     public UserDtoResponse register(UserDtoRequest userDtoRequest) throws ServerException {
 
@@ -39,6 +37,7 @@ public class UserService {
 
         userRepository.save(user);
 
+        log.info("register: " + user);
         return userMapStruct.fromUserToUserDtoResponse(user);
     }
 }

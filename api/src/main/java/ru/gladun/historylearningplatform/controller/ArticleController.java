@@ -1,5 +1,6 @@
 package ru.gladun.historylearningplatform.controller;
 
+import lombok.AllArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +22,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:8888")
+@AllArgsConstructor
 @RequestMapping("/api")
 public class ArticleController {
 
@@ -29,12 +31,6 @@ public class ArticleController {
     private final EsArticleService esArticleService;
 
     private final WebClient.Builder webClientBuilder;
-
-    public ArticleController(ArticleService articleService, EsArticleService esArticleService, WebClient.Builder webClientBuilder) {
-        this.articleService = articleService;
-        this.esArticleService = esArticleService;
-        this.webClientBuilder = webClientBuilder;
-    }
 
     @PostMapping(value = "/articles", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ArticleDtoResponse postArticle(@Valid @RequestBody ArticleDtoRequest articleDtoRequest) throws Exception {

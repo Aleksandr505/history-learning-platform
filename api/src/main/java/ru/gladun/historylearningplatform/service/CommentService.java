@@ -1,5 +1,7 @@
 package ru.gladun.historylearningplatform.service;
 
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.gladun.historylearningplatform.dto.request.ArticleDtoRequest;
 import ru.gladun.historylearningplatform.dto.request.CommentDtoRequest;
@@ -20,19 +22,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
+@Slf4j
 public class CommentService {
 
     private final CommentRepository commentRepository;
     private final ArticleRepository articleRepository;
     private final UserRepository userRepository;
     private final CommentMapStruct commentMapStruct;
-
-    public CommentService(CommentRepository commentRepository, ArticleRepository articleRepository, UserRepository userRepository, CommentMapStruct commentMapStruct) {
-        this.commentRepository = commentRepository;
-        this.articleRepository = articleRepository;
-        this.userRepository = userRepository;
-        this.commentMapStruct = commentMapStruct;
-    }
 
     public CommentDtoResponse postComment(CommentDtoRequest commentDtoRequest) throws ServerException {
         User author = userRepository.findById(commentDtoRequest.getUserId())
@@ -47,6 +44,7 @@ public class CommentService {
 
         commentRepository.save(comment);
 
+        log.info("postComment: " + comment);
         return commentMapStruct.fromCommentToCommentDtoResponse(comment);
     }
 
@@ -54,6 +52,7 @@ public class CommentService {
         Comment comment = commentRepository.findById(id)
                 .orElseThrow(() -> new ServerException(ServerErrorCode.COMMENT_NOT_FOUND));
 
+        log.info("getComment: " + comment);
         return commentMapStruct.fromCommentToCommentDtoResponse(comment);
     }
 
@@ -68,6 +67,7 @@ public class CommentService {
 
         commentRepository.save(comment);
 
+        log.info("editComment: " + comment);
         return commentMapStruct.fromCommentToCommentDtoResponse(comment);
     }
 

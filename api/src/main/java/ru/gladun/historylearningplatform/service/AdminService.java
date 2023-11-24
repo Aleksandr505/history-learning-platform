@@ -1,5 +1,7 @@
 package ru.gladun.historylearningplatform.service;
 
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.gladun.historylearningplatform.dto.response.UserDtoResponse;
@@ -13,15 +15,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
+@Slf4j
 public class AdminService {
 
     private final UserRepository userRepository;
     private final UserMapStruct userMapStruct;
-
-    public AdminService(UserRepository userRepository, UserMapStruct userMapStruct) {
-        this.userRepository = userRepository;
-        this.userMapStruct = userMapStruct;
-    }
 
     @Transactional
     public List<UserDtoResponse> getAllUsers() {
@@ -30,6 +29,7 @@ public class AdminService {
         for (User user : users) {
             userDtoResponses.add(userMapStruct.fromUserToUserDtoResponse(user));
         }
+        log.info("getAllUsers: " + userDtoResponses);
         return userDtoResponses;
     }
 
@@ -37,6 +37,7 @@ public class AdminService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ServerException(ServerErrorCode.USER_NOT_FOUND));
 
+        log.info("getUser: " + user.toString());
         return userMapStruct.fromUserToUserDtoResponse(user);
     }
 
