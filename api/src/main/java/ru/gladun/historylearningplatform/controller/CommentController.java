@@ -21,17 +21,17 @@ public class CommentController {
     private final CommentService commentService;
 
     @PostMapping(value = "/comments", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public CommentDtoResponse postComment(@Valid @RequestBody CommentDtoRequest commentDtoRequest) throws ServerException {
+    public CommentDtoResponse postComment(@Valid @RequestBody CommentDtoRequest commentDtoRequest) {
         return commentService.postComment(commentDtoRequest);
     }
 
     @GetMapping(value = "/comments/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public CommentDtoResponse getComment(@PathVariable long id) throws ServerException {
+    public CommentDtoResponse getComment(@PathVariable long id) {
         return commentService.getComment(id);
     }
 
     @PutMapping(value = "/comments/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public CommentDtoResponse editComment(@PathVariable long id, @Valid @RequestBody CommentDtoRequest commentDtoRequest) throws ServerException {
+    public CommentDtoResponse editComment(@PathVariable long id, @Valid @RequestBody CommentDtoRequest commentDtoRequest) {
         return commentService.editComment(id, commentDtoRequest);
     }
 

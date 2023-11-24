@@ -33,7 +33,7 @@ public class ArticleController {
     private final WebClient.Builder webClientBuilder;
 
     @PostMapping(value = "/articles", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ArticleDtoResponse postArticle(@Valid @RequestBody ArticleDtoRequest articleDtoRequest) throws Exception {
+    public ArticleDtoResponse postArticle(@Valid @RequestBody ArticleDtoRequest articleDtoRequest) {
         ArticleDtoResponse response = articleService.postArticle(articleDtoRequest);
         esArticleService.indexArticle(response.getId(), response.getTitle(), response.getDate());
         return response;
@@ -45,25 +45,25 @@ public class ArticleController {
     }
 
     @GetMapping(value = "/articles/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ArticleDtoResponse getArticle(@PathVariable long id) throws ServerException {
+    public ArticleDtoResponse getArticle(@PathVariable long id) {
         return articleService.getArticle(id);
     }
 
     @PutMapping(value = "/articles/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ArticleDtoResponse editArticle(@PathVariable long id, @Valid @RequestBody ArticleDtoRequest articleDtoRequest) throws Exception {
+    public ArticleDtoResponse editArticle(@PathVariable long id, @Valid @RequestBody ArticleDtoRequest articleDtoRequest) {
         ArticleDtoResponse response = articleService.editArticle(id, articleDtoRequest);
         esArticleService.indexArticle(response.getId(), response.getTitle(), response.getDate());
         return response;
     }
 
     @DeleteMapping(value = "/articles/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public void deleteArticle(@PathVariable long id) throws ServerException, IOException {
+    public void deleteArticle(@PathVariable long id) {
         articleService.deleteArticle(id);
         esArticleService.delete(id);
     }
 
     @GetMapping("/articles/search")
-    public List<ArticleDtoResponse> searchArticles(@RequestParam("query") String query) throws Exception {
+    public List<ArticleDtoResponse> searchArticles(@RequestParam("query") String query) {
         List<ArticleDtoResponse> response = new ArrayList<>();
         List<Long> idList = esArticleService.searchArticles(query);
         for (Long id : idList) {
@@ -74,7 +74,7 @@ public class ArticleController {
     }
 
     @PostMapping(value = "/articles/ai", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public AIMessageDtoResponse generateArticleUsingAI(@Valid @RequestBody ArticleDtoRequest articleDtoRequest) throws Exception {
+    public AIMessageDtoResponse generateArticleUsingAI(@Valid @RequestBody ArticleDtoRequest articleDtoRequest) {
 
         return webClientBuilder.build()
                 .post()

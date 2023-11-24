@@ -23,7 +23,7 @@ public class UserService {
     private final UserMapStruct userMapStruct;
     private final PasswordEncoder passwordEncoder;
 
-    public UserDtoResponse register(UserDtoRequest userDtoRequest) throws ServerException {
+    public UserDtoResponse register(UserDtoRequest userDtoRequest) {
 
         if (!userDtoRequest.getPassword().equals(userDtoRequest.getPasswordConfirm()))
             throw new ServerException(ServerErrorCode.WRONG_PASSWORD_CONFIRM);

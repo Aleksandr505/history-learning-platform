@@ -33,7 +33,7 @@ public class AdminService {
         return userDtoResponses;
     }
 
-    public UserDtoResponse getUser(long id) throws ServerException {
+    public UserDtoResponse getUser(long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ServerException(ServerErrorCode.USER_NOT_FOUND));
 

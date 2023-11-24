@@ -24,7 +24,7 @@ public class AdminController {
     }
 
     @GetMapping(value = "/users/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public UserDtoResponse getUser(@PathVariable long id) throws ServerException {
+    public UserDtoResponse getUser(@PathVariable long id) {
         return adminService.getUser(id);
     }
 

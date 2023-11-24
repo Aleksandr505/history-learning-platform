@@ -20,7 +20,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping(value = "/users", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public UserDtoResponse register(@Valid @RequestBody UserDtoRequest registerUserDtoRequest) throws ServerException {
+    public UserDtoResponse register(@Valid @RequestBody UserDtoRequest registerUserDtoRequest) {
         return userService.register(registerUserDtoRequest);
     }
 

@@ -31,7 +31,7 @@ public class CommentService {
     private final UserRepository userRepository;
     private final CommentMapStruct commentMapStruct;
 
-    public CommentDtoResponse postComment(CommentDtoRequest commentDtoRequest) throws ServerException {
+    public CommentDtoResponse postComment(CommentDtoRequest commentDtoRequest) {
         User author = userRepository.findById(commentDtoRequest.getUserId())
                 .orElseThrow(() -> new ServerException(ServerErrorCode.USER_NOT_FOUND));
 
@@ -48,7 +48,7 @@ public class CommentService {
         return commentMapStruct.fromCommentToCommentDtoResponse(comment);
     }
 
-    public CommentDtoResponse getComment(long id) throws ServerException {
+    public CommentDtoResponse getComment(long id) {
         Comment comment = commentRepository.findById(id)
                 .orElseThrow(() -> new ServerException(ServerErrorCode.COMMENT_NOT_FOUND));
 
@@ -56,7 +56,7 @@ public class CommentService {
         return commentMapStruct.fromCommentToCommentDtoResponse(comment);
     }
 
-    public CommentDtoResponse editComment(long id, CommentDtoRequest commentDtoRequest) throws ServerException {
+    public CommentDtoResponse editComment(long id, CommentDtoRequest commentDtoRequest) {
         Comment commentDb = commentRepository.findById(id)
                 .orElseThrow(() -> new ServerException(ServerErrorCode.COMMENT_NOT_FOUND));
 

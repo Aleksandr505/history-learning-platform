@@ -36,7 +36,7 @@ public class ArticleService {
     private final ArticleListMapStruct articleListMapStruct;
     private final CommentMapStruct commentMapStruct;
 
-    public ArticleDtoResponse postArticle(ArticleDtoRequest articleDtoRequest) throws ServerException {
+    public ArticleDtoResponse postArticle(ArticleDtoRequest articleDtoRequest) {
         User author = userRepository.findById(articleDtoRequest.getUserId())
                 .orElseThrow(() -> new ServerException(ServerErrorCode.USER_NOT_FOUND));
 
@@ -63,7 +63,7 @@ public class ArticleService {
         return articleDtoResponses;
     }
 
-    public ArticleDtoResponse getArticle(long id) throws ServerException {
+    public ArticleDtoResponse getArticle(long id) {
         Article article = articleRepository.findById(id)
                 .orElseThrow(() -> new ServerException(ServerErrorCode.ARTICLE_NOT_FOUND));
         Set<Comment> comments = commentRepository.findCommentsByArticleId(id);
@@ -73,7 +73,7 @@ public class ArticleService {
         return articleMapStruct.fromArticleToArticleDtoResponse(article);
     }
 
-    public ArticleDtoResponse editArticle(long id, ArticleDtoRequest articleDtoRequest) throws ServerException {
+    public ArticleDtoResponse editArticle(long id, ArticleDtoRequest articleDtoRequest) {
         Article articleDb = articleRepository.findById(id)
                 .orElseThrow(() -> new ServerException(ServerErrorCode.ARTICLE_NOT_FOUND));
 
@@ -88,7 +88,7 @@ public class ArticleService {
         return articleMapStruct.fromArticleToArticleDtoResponse(article);
     }
 
-    public void deleteArticle(long id) throws ServerException {
+    public void deleteArticle(long id) {
         Article article = articleRepository.findById(id)
                 .orElseThrow(() -> new ServerException(ServerErrorCode.ARTICLE_NOT_FOUND));
 

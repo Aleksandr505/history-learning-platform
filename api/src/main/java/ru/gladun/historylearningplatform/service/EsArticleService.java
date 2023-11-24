@@ -24,14 +24,14 @@ public class EsArticleService {
 
     private final EsArticleRepository esArticleRepository;
 
-    public void indexArticle(Long id, String title, String date) throws Exception {
+    public void indexArticle(Long id, String title, String date) {
         Article document = new Article(id, title, date);
         esArticleRepository.save(document);
 
         log.info("indexArticle: " + document);
     }
 
-    public List<Long> searchArticles(String searchString) throws Exception {
+    public List<Long> searchArticles(String searchString) {
        List<Article> documents = esArticleRepository.findByTitle(searchString);
 
         List<Long> idList = new ArrayList<>();
@@ -43,7 +43,7 @@ public class EsArticleService {
         return idList;
     }
 
-    public void delete(Long id) throws IOException {
+    public void delete(Long id) {
         esArticleRepository.deleteById(id);
     }
 
