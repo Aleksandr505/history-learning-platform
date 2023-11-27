@@ -18,7 +18,7 @@ CREATE TABLE "user"
 
 CREATE TABLE user_roles
 (
-    user_id SERIAL NOT NULL REFERENCES "user"(id),
+    user_id SERIAL REFERENCES "user" (id),
     roles VARCHAR(255)
 );
 

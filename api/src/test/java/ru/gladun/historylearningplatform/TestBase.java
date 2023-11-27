@@ -1,13 +1,22 @@
 package ru.gladun.historylearningplatform;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.ClassRule;
+import org.junit.Rule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 import ru.gladun.historylearningplatform.dto.request.ArticleDtoRequest;
 import ru.gladun.historylearningplatform.dto.request.CommentDtoRequest;
 import ru.gladun.historylearningplatform.dto.request.UserDtoRequest;
@@ -28,6 +37,21 @@ public class TestBase {
     private ObjectMapper objectMapper;
     @Autowired
     private MockMvc mvc;
+
+    @Container
+    private static final PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:13.1-alpine")
+            .withDatabaseName("platformdb").withUsername("postgres").withPassword("postgres");
+
+    @DynamicPropertySource
+    static void datasourceProperties(DynamicPropertyRegistry registry) {
+        registry.add("spring.datasource.url", postgreSQLContainer::getJdbcUrl);
+        registry.add("spring.datasource.password", postgreSQLContainer::getPassword);
+        registry.add("spring.datasource.username", postgreSQLContainer::getUsername);
+    }
+
+    static {
+        postgreSQLContainer.start();
+    }
 
     protected UserDtoResponse createUser(UserDtoRequest user) throws Exception {
         ResultActions resultActions = mvc.perform(post("/api/users")

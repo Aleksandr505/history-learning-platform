@@ -1,5 +1,7 @@
 package ru.gladun.historylearningplatform.service;
 
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.gladun.historylearningplatform.dto.request.ArticleDtoRequest;
@@ -23,6 +25,8 @@ import java.util.Optional;
 import java.util.Set;
 
 @Service
+@AllArgsConstructor
+@Slf4j
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
@@ -32,16 +36,7 @@ public class ArticleService {
     private final ArticleListMapStruct articleListMapStruct;
     private final CommentMapStruct commentMapStruct;
 
-    public ArticleService(ArticleRepository articleRepository, UserRepository userRepository, CommentRepository commentRepository, ArticleMapStruct articleMapStruct, ArticleListMapStruct articleListMapStruct, CommentMapStruct commentMapStruct) {
-        this.articleRepository = articleRepository;
-        this.userRepository = userRepository;
-        this.commentRepository = commentRepository;
-        this.articleMapStruct = articleMapStruct;
-        this.articleListMapStruct = articleListMapStruct;
-        this.commentMapStruct = commentMapStruct;
-    }
-
-    public ArticleDtoResponse postArticle(ArticleDtoRequest articleDtoRequest) throws ServerException {
+    public ArticleDtoResponse postArticle(ArticleDtoRequest articleDtoRequest) {
         User author = userRepository.findById(articleDtoRequest.getUserId())
                 .orElseThrow(() -> new ServerException(ServerErrorCode.USER_NOT_FOUND));
 
@@ -50,6 +45,7 @@ public class ArticleService {
 
         articleRepository.save(article);
 
+        log.info("postArticle: " + article);
         return articleMapStruct.fromArticleToArticleDtoResponse(article);
     }
 
@@ -62,19 +58,22 @@ public class ArticleService {
             article.setComments(comments);
             articleDtoResponses.add(articleMapStruct.fromArticleToArticleDtoResponse(article));
         }
+
+        log.info("getAllArticles: " + articleDtoResponses);
         return articleDtoResponses;
     }
 
-    public ArticleDtoResponse getArticle(long id) throws ServerException {
+    public ArticleDtoResponse getArticle(long id) {
         Article article = articleRepository.findById(id)
                 .orElseThrow(() -> new ServerException(ServerErrorCode.ARTICLE_NOT_FOUND));
         Set<Comment> comments = commentRepository.findCommentsByArticleId(id);
         article.setComments(comments);
 
+        log.info("getArticle: " + article);
         return articleMapStruct.fromArticleToArticleDtoResponse(article);
     }
 
-    public ArticleDtoResponse editArticle(long id, ArticleDtoRequest articleDtoRequest) throws ServerException {
+    public ArticleDtoResponse editArticle(long id, ArticleDtoRequest articleDtoRequest) {
         Article articleDb = articleRepository.findById(id)
                 .orElseThrow(() -> new ServerException(ServerErrorCode.ARTICLE_NOT_FOUND));
 
@@ -85,13 +84,15 @@ public class ArticleService {
 
         articleRepository.save(article);
 
+        log.info("editArticle: " + article);
         return articleMapStruct.fromArticleToArticleDtoResponse(article);
     }
 
-    public void deleteArticle(long id) throws ServerException {
+    public void deleteArticle(long id) {
         Article article = articleRepository.findById(id)
                 .orElseThrow(() -> new ServerException(ServerErrorCode.ARTICLE_NOT_FOUND));
 
+        log.info("deleteArticle: " + article);
         articleRepository.delete(article);
     }
 
